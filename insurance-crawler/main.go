@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -54,42 +52,17 @@ func getInsuranceDetails(entry Search) {
 		})
 		tempdata.Price = e.ChildText(entry.Price)
 
-		// tempdata.Benefits = e.ChildText(entry.Benefits)
-		// tempdata.Eligibility = e.ChildText(entry.Eligibility)
-		// tempdata.Duration = e.ChildText("div.apply_by > div.item_body")
+		// js, err := json.MarshalIndent(tempdata, "", "    ")
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
 
-		js, err := json.MarshalIndent(tempdata, "", "    ")
-		if err != nil {
-			log.Fatal(err)
-		}
+		DB.Create(&tempdata)
 
-		// DB.Create(&tempdata)
-		
-		File.WriteString(string(js) + "\n")
+		// File.WriteString(string(js) + "\n")
 
 		// fmt.Println(string(js))
 	})
-
-	// c.OnHTML("tr td", func(elem *colly.HTMLElement) {
-	// 	// fmt.Println(string("--------------////////////////////////////-------------------"))
-	// 	// elem.ForEach("tr td", func(_ int, e *colly.HTMLElement) {
-	// 		fmt.Println(elem.Text)
-	// 	// })
-
-	// })
-
-	// if strings.Contains(entry.Eligibility, "table"){
-	// 	fmt.Println("**************")
-	// 	d.OnHTML("tr", func(el *colly.HTMLElement){
-	// 		fmt.Println("????????????")
-	// 		c.OnHTML("tr", func(ele *colly.HTMLElement){
-	// 			fmt.Println("-----------")
-	// 			ele.ForEach("td", func(_ int, e *colly.HTMLElement) {
-	// 				tempdata.Eligibility = append(tempdata.Eligibility, e.Text)
-	// 			})
-	// 		})
-	// 	})
-	// }
 
 	c.OnError(func(r *colly.Response, err error) {
 		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
